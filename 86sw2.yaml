@@ -1,0 +1,61 @@
+blueprint:
+  name: ZHA - Aqara Wireless Remote Switch (Double Rocker 86sw2)
+  description: Automate your Xiaomi Aqara Wireless Remote Switch (Double Rocker) (lumi.sensor_86sw2 Version) using ZHA events.
+  domain: automation
+  input:
+    aqara_mini_switch:
+      name: Select the Aqara Wireless Remote Switch (Double Rocker)
+      description: Aqara Wireless Remote Switch (Double Rocker)
+      selector:
+        device:
+          integration: zha
+          manufacturer: LUMI
+          entity:
+            domain: sensor
+            device_class: battery
+    button_press_left:
+      name: Single Press Left
+      description: Action to run on single press
+      default: []
+      selector:
+        action:
+    button_press_right:
+      name: Single Press Right
+      description: Action to run on single press
+      default: []
+      selector:
+        action:
+    button_press_both:
+      name: Single Press Both Buttons
+      description: Action to run on single presses
+      default: []
+      selector:
+        action:
+
+mode: restart
+max_exceeded: silent
+
+trigger:
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_id: !input aqara_mini_switch
+
+action:
+  - variables:
+      command: "{{ trigger.event.data.endpoint_id }}"
+      pressed: "{{ trigger.event.data.args.value }}"
+
+  - choose:
+      - conditions:
+          - "{{ command == 1 }}"
+          - "{{ pressed == 'Bool.true' }}"
+        sequence: !input button_press_left
+      - conditions:
+          - "{{ command == 2 }}"
+          - "{{ pressed == 'Bool.true' }}"
+        sequence: !input button_press_right
+      - conditions:
+          - "{{ command == 3 }}"
+          - "{{ pressed == 'Bool.true' }}"
+        sequence: !input button_press_both

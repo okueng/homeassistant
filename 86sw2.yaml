@@ -49,13 +49,13 @@ action:
   - choose:
       - conditions:
           - "{{ command == 1 }}"
-          - "{{ pressed == 1 }}"
+          - "{{ pressed == 'Bool.true' }}"
         sequence: !input button_press_left
       - conditions:
           - "{{ command == 2 }}"
-          - "{{ pressed == 2 }}"
+          - "{{ pressed == 'Bool.true' }}"
         sequence: !input button_press_right
       - conditions:
           - "{{ command == 3 }}"
-          - "{{ pressed == 3 }}"
+          - "{{ pressed == 'Bool.true' }}"
         sequence: !input button_press_both

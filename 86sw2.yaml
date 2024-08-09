@@ -44,7 +44,7 @@ trigger:
 action:
   - variables:
       command: "{{ trigger.event.data.endpoint_id }}"
-      pressed: "{{ trigger.event.data.args.value }}"
+      pressed: "{{ trigger.event.data.args.attribute_value }}"
 
   - choose:
       - conditions:
